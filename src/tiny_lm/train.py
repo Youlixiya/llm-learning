@@ -1,5 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from pathlib import Path
+import argparse
+import json
+from typing import Any, Dict
 
 from datasets import Dataset
 from transformers import (
@@ -20,33 +23,37 @@ PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
 @dataclass
 class TinyLMTrainerConfig:
+    # ---- 数据 / 训练相关 ----
     model_max_length: int = 128
-    batch_size: int = 16
-    num_train_epochs: int = 3
+    batch_size: int = 8
+    num_train_epochs: int = 1  # 只训练 1 个 epoch
     learning_rate: float = 3e-4
     logging_steps: int = 10
     save_steps: int = 100
     output_dir: str = "tiny_lm_hf"
+
+    # ---- tokenizer 相关 ----
     base_tokenizer: str = "Qwen/Qwen2.5-0.5B"
 
+    # ---- 模型规模相关（更大一些，适配 5090 显卡）----
+    d_model: int = 512
+    n_heads: int = 8
+    num_layers: int = 8
+    dim_feedforward: int = 2048
+    dropout: float = 0.1
 
-def build_corpus() -> str:
-    # 一个简单的中英混合玩具语料，用于演示训练流程
-    corpus = """
-今天天气很好，适合学习大语言模型。
-大语言模型可以用于对话、问答、总结和代码生成。
-只要掌握了基本原理和工程套路，你就能把 LLM 用在自己的项目里。
+    @classmethod
+    def from_json(cls, path: str) -> "TinyLMTrainerConfig":
+        """从 JSON 配置文件加载，并在 dataclass 默认值基础上覆盖。"""
+        with open(path, "r", encoding="utf-8") as f:
+            data: Dict[str, Any] = json.load(f)
 
-Today is a good day to learn about large language models.
-With a tiny Transformer, we can train a toy language model from scratch.
-This model will not be very strong, but it is perfect for education purposes.
-"""
-    # 去掉两端空白
-    return corpus.strip()
+        default_dict = asdict(cls())
+        default_dict.update(data)
+        return cls(**default_dict)
 
 
-def train() -> None:
-    cfg = TinyLMTrainerConfig()
+def train(cfg: TinyLMTrainerConfig) -> None:
 
     # 1) 使用 Qwen tokenizer（或其它 HF tokenizer）
     tokenizer = AutoTokenizer.from_pretrained(
@@ -57,15 +64,27 @@ def train() -> None:
     tokenizer.model_max_length = cfg.model_max_length
 
     # 2) TinyLM HF 模型，vocab_size 与 tokenizer 对齐
+    # 注意：很多 HF tokenizer（包括 Qwen）会有额外的 added_tokens，
+    # tokenizer.vocab_size 不包含这些，而编码后的 token id 可能会用到它们，
+    # 所以这里必须用 len(tokenizer) 来作为真正的 vocab_size，避免 embedding / CE 越界。
     model_config = TinyLMHFConfig(
-        vocab_size=tokenizer.vocab_size,
+        vocab_size=len(tokenizer),
+        d_model=cfg.d_model,
+        n_heads=cfg.n_heads,
+        num_layers=cfg.num_layers,
+        dim_feedforward=cfg.dim_feedforward,
         max_seq_len=cfg.model_max_length,
+        dropout=cfg.dropout,
     )
     model = TinyLMHFModel(model_config)
 
-    # 3) 构造一个最小示例语料，并转成 HF Dataset
-    corpus = build_corpus()
-    dataset = Dataset.from_dict({"text": [corpus]})
+    # 3) 从本地 jsonl 预训练数据构造 HF Dataset
+    pretrain_path = DATA_DIR / "pretrain_hq.jsonl"
+    if not pretrain_path.exists():
+        raise FileNotFoundError(f"预训练数据文件不存在: {pretrain_path}")
+
+    # jsonl 中每一行是 {"text": "..."}，直接用 datasets 加载
+    dataset = Dataset.from_json(str(pretrain_path))
 
     def tokenize_fn(examples):
         return tokenizer(
@@ -95,6 +114,8 @@ def train() -> None:
         num_train_epochs=cfg.num_train_epochs,
         logging_steps=cfg.logging_steps,
         save_steps=cfg.save_steps,
+        save_strategy="epoch",  # 每个 epoch 结束时保存
+        save_total_limit=1,  # 只保留最后一次 checkpoint
         report_to=[],
     )
 
@@ -112,6 +133,25 @@ def train() -> None:
     print(f"HF Trainer 训练完成，模型与 tokenizer 已保存到: {output_dir}")
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Train TinyLM with HF Trainer")
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=None,
+        help="JSON 配置文件路径（可选），用于覆盖默认 TinyLMTrainerConfig。",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    train()
+    args = parse_args()
+    if args.config:
+        cfg = TinyLMTrainerConfig.from_json(args.config)
+        print(f"使用外部配置文件: {args.config}")
+    else:
+        cfg = TinyLMTrainerConfig()
+        print("使用 TinyLMTrainerConfig 默认配置。")
+
+    train(cfg)
 

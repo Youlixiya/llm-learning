@@ -136,3 +136,37 @@ bash scripts/run_tiny_lm.sh
 
 在后续章节中，我们将从这个 Tiny LM 出发，过渡到使用成熟的开源大模型，并在它们之上进行指令微调和 RAG 系统的构建。
 
+---
+
+### 2.7 进阶：基于 Qwen 分词器的 TinyLM SFT 与多轮对话
+
+前面的示例更多是为了**从零理解 Tiny LM 的训练与生成流程**。在实际工程中，我们通常会：
+
+- 使用成熟的分词器（例如 Qwen 的 tokenizer）；
+- 用统一的 HF 权重格式来保存模型；
+- 直接构建**多轮对话**接口（CLI / Web）方便调试。
+
+本仓库在 `src/tiny_lm/` 下提供了一套轻量级的 SFT + 对话脚本，基于前面 Tiny LM 的实现进行扩展：
+
+- `train_sft.py`：使用 Qwen 分词器和 HF 适配层，对 TinyLM 做指令 SFT；
+- `chat_ui.py`：加载 SFT 后的 TinyLM，提供统一的多轮对话接口（命令行 & Gradio WebUI）。
+
+示例流程如下：
+
+```bash
+# 1）运行 TinyLM 的 SFT 训练（会在 data/processed/ 下生成 HF checkpoint）
+python src/tiny_lm/train_sft.py
+
+# 2）使用同一个 checkpoint，启动命令行多轮对话
+python src/tiny_lm/chat_ui.py --mode cli
+
+# 3）或启动 Web 多轮对话（浏览器访问 http://localhost:7860）
+python src/tiny_lm/chat_ui.py --mode gradio --port 7860
+```
+
+这样你可以在一台单机上，快速从：
+
+- “能从零训练一个 Tiny LM”，
+- 自然过渡到“能跑起一个完整的本地聊天 demo”，
+
+为后续上更大模型（LoRA 微调、RAG、Agent 等）打好工程基础。

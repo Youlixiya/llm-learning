@@ -171,15 +171,29 @@ llm-learning/
 
 ### Tiny LM (`src/tiny_lm/`)
 
-最小可运行的 Transformer 语言模型实现，用于理解 LLM 的核心机制。
+最小可运行的 Transformer 语言模型实现，用于理解 LLM 的核心机制，并在此基础上进一步做指令 SFT 和多轮对话。
 
 ```bash
-# 训练模型
+# 1）从零训练一个字符级 Tiny LM
 python src/tiny_lm/train.py
 
-# 生成文本
+# 使用训练好的模型做文本生成
 python src/tiny_lm/generate.py --prompt "今天天气"
+
+# 2）基于 Qwen 分词器进行 SFT，并导出 HF 适配权重
+python src/tiny_lm/train_sft.py
+
+# 3）加载 SFT 后的 TinyLM，启动本地多轮对话
+
+# 命令行对话（CLI）
+python src/tiny_lm/chat_ui.py --mode cli
+
+# Web 多轮对话（Gradio）
+python src/tiny_lm/chat_ui.py --mode gradio --port 7860
 ```
+
+> 说明：`train_sft.py` 会在 `data/processed/` 下生成基于 Qwen 分词器的 TinyLM HF checkpoint，  
+> `chat_ui.py` 复用同一套 chat 模板，既可以在终端中对话，也可以通过浏览器访问 Gradio WebUI 进行多轮对话。
 
 ### 指令微调 (`src/finetune/`)
 
