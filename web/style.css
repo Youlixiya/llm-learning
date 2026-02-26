@@ -1,4 +1,6 @@
-/* CSS Variables for Theme Support */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+/* CSS Variables for Theme Support (Dark as default) */
 :root {
   /* Dark theme (default) */
   --bg-primary: #050816;
@@ -14,27 +16,27 @@
   --border-color: rgba(148, 163, 184, 0.18);
   --border-strong: rgba(55, 65, 81, 0.95);
   --shadow: rgba(15, 23, 42, 0.95);
-  --accent: #6366f1;
-  --accent-hover: #8b5cf6;
+  --accent: #0ea5e9; /* Sky-500 */
+  --accent-hover: #0284c7; /* Sky-600 */
 }
 
 [data-theme="light"] {
   /* Light theme */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-tertiary: #f3f4f6;
+  --bg-primary: #f0f9ff; /* Design system background */
+  --bg-secondary: #e0f2fe;
+  --bg-tertiary: #dbeafe;
   --bg-card: #ffffff;
-  --bg-panel: rgba(249, 250, 251, 0.95);
-  --bg-code: rgba(249, 250, 251, 0.9);
+  --bg-panel: rgba(255, 255, 255, 0.98);
+  --bg-code: #e0f2fe;
   --bg-header: rgba(255, 255, 255, 0.95);
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-tertiary: #6b7280;
-  --border-color: rgba(209, 213, 219, 0.5);
-  --border-strong: rgba(209, 213, 219, 0.8);
-  --shadow: rgba(0, 0, 0, 0.1);
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
+  --text-primary: #0c4a6e; /* Design system text */
+  --text-secondary: #1e40af;
+  --text-tertiary: #64748b;
+  --border-color: rgba(148, 163, 184, 0.35);
+  --border-strong: rgba(148, 163, 184, 0.75);
+  --shadow: rgba(15, 23, 42, 0.18);
+  --accent: #0ea5e9;
+  --accent-hover: #0284c7;
 }
 
 /* Global styles */
@@ -48,8 +50,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Segoe UI", sans-serif;
+  font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", "Segoe UI", sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -118,9 +120,9 @@ pre {
 
 .container {
   width: 100%;
-  max-width: 1800px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 2.5rem;
 }
 
 header {
@@ -284,9 +286,12 @@ footer {
 
 .hero-title {
   font-size: clamp(2.2rem, 4vw, 2.7rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.1;
   margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+  font-family: "JetBrains Mono", system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", "Segoe UI", sans-serif;
 }
 
 .hero-title-gradient {
@@ -325,15 +330,15 @@ footer {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: #04101c;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #ffffff;
   font-weight: 600;
-  box-shadow: 0 12px 30px rgba(34, 197, 94, 0.55);
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.55);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 40px rgba(34, 197, 94, 0.8);
+  box-shadow: 0 16px 40px rgba(234, 88, 12, 0.75);
 }
 
 .btn-outline {
@@ -657,14 +662,14 @@ footer {
 }
 
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Chapter Layout - Increased content area */
+/* Chapter Layout - Sidebar + Content */
 .chapter-layout {
   display: grid;
-  grid-template-columns: minmax(0, 8fr) minmax(180px, 1fr);
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
   gap: 2.5rem;
 }
 
@@ -718,7 +723,7 @@ footer {
 
 .chapter-content {
   border-radius: 1rem;
-  padding: 2.5rem 3rem;
+  padding: 2.5rem 3.5rem;
   background: var(--bg-card);
   border: 1px solid var(--border-strong);
   box-shadow: 0 18px 55px var(--shadow);
@@ -758,7 +763,7 @@ footer {
 }
 
 .chapter-md {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--text-primary);
   line-height: 1.8;
   max-width: 100%;
@@ -929,7 +934,7 @@ footer {
 
 @media (max-width: 1200px) {
   .chapter-layout {
-    grid-template-columns: minmax(0, 6fr) minmax(160px, 1fr);
+    grid-template-columns: minmax(0, 15fr) minmax(160px, 1fr);
     gap: 2rem;
   }
   
