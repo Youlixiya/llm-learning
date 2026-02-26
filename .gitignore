@@ -1,0 +1,26 @@
+### Python cache & virtualenv
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+### Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+
+### Project data & artifacts
+# Raw / processed datasets and model artifacts should not go into git
+data/
+
+### Logs / checkpoints / runs (if you add them later)
+logs/
+checkpoints/
+runs/
+
