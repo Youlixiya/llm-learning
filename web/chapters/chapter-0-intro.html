@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>0. 引言 · LLM 实战教程</title>
+    <meta
+      name="description"
+      content="为什么还要系统地学习 LLM？本章介绍教程的目标、适合人群与整体结构。"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body class="page-root">
+    <header>
+      <div class="container nav">
+        <div class="nav-left">
+          <div class="nav-logo"></div>
+          <div class="nav-title">
+            <span class="nav-title-main">LLM 实战教程</span>
+            <span class="nav-title-sub">0. 引言：为什么还要系统学 LLM？</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="../index.html" class="nav-link">返回首页</a>
+          <a href="chapter-1-transformer-basics.html" class="nav-link">
+            下一章 · Transformer 基础 →
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="chapter-layout">
+          <aside class="chapter-sidebar">
+            <div class="chapter-sidebar-title">教程导航</div>
+            <ul class="chapter-sidebar-list">
+              <li>
+                <a href="chapter-0-intro.html">
+                  <span></span>
+                  0. 引言（当前）
+                </a>
+              </li>
+              <li>
+                <a href="chapter-1-transformer-basics.html">
+                  <span></span>
+                  1. Transformer 与语言模型基础
+                </a>
+              </li>
+              <li>
+                <a href="chapter-2-tiny-lm-training.html">
+                  <span></span>
+                  2. Tiny LM 训练与生成
+                </a>
+              </li>
+              <li>
+                <a href="chapter-3-instruction-finetune-lora.html">
+                  <span></span>
+                  3. 指令微调与 LoRA
+                </a>
+              </li>
+              <li>
+                <a href="chapter-4-rag-system.html">
+                  <span></span>
+                  4. RAG（检索增强生成）
+                </a>
+              </li>
+              <li>
+                <a href="chapter-5-agents-and-tools.html">
+                  <span></span>
+                  5. Agent 与工具调用
+                </a>
+              </li>
+            </ul>
+          </aside>
+
+          <article class="chapter-content">
+            <div class="chapter-meta-row">
+              <div class="chapter-breadcrumb">
+                <a href="../index.html">LLM 实战教程</a>
+                <span> / </span>
+                <span>0. 引言</span>
+              </div>
+              <span class="status-pill">
+                <span class="status-dot"></span>
+                阅读时间约 8–12 分钟
+              </span>
+            </div>
+
+            <h1 class="chapter-title">0. 引言：为什么还要系统学 LLM？</h1>
+            <p class="chapter-subtitle">
+              本页内容直接从仓库中的 <code>docs/00_intro.md</code>
+              动态加载，始终与代码里的文档保持同步。
+            </p>
+
+            <div id="chapter-md" class="chapter-md loading">
+              正在载入文档内容，请稍候……
+            </div>
+
+            <div class="chapter-nav-bottom">
+              <span></span>
+              <a href="chapter-1-transformer-basics.html">
+                下一章：1. Transformer 与语言模型基础 →
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container footer-row">
+        <div>
+          <div>LLM 实战教程 · Chapter 0</div>
+          <div>引言与整体结构，建议从本章开始阅读。</div>
+        </div>
+        <div class="footer-right">
+          <span class="badge">
+            <span class="badge-dot"></span>
+            <span>文档与仓库内容实时同步</span>
+          </span>
+          <a
+            class="nav-link"
+            href="https://github.com/youlixiya/llm-learning/blob/main/docs/00_intro.md"
+            target="_blank"
+            rel="noreferrer"
+          >
+            在 GitHub 上查看 Markdown →
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const target = document.getElementById("chapter-md");
+        const mdPath = "../../docs/00_intro.md";
+
+        function renderMarkdown(text) {
+          try {
+            const html = marked.parse(text);
+            target.classList.remove("loading");
+            target.innerHTML = html;
+          } catch (e) {
+            console.error(e);
+            target.classList.remove("loading");
+            target.classList.add("error");
+            target.textContent = "渲染 Markdown 时出错，请稍后刷新重试。";
+          }
+        }
+
+        fetch(mdPath)
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("HTTP " + res.status);
+            }
+            return res.text();
+          })
+          .then(renderMarkdown)
+          .catch((err) => {
+            console.error(err);
+            target.classList.remove("loading");
+            target.classList.add("error");
+            target.textContent =
+              "无法加载 docs/00_intro.md，请确认该文件已经随页面一同部署。";
+          });
+      })();
+    </script>
+  </body>
+</html>
+

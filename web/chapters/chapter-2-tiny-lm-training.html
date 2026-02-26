@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>2. Tiny LM 训练与生成 · LLM 实战教程</title>
+    <meta
+      name="description"
+      content="使用项目中的脚本，从零跑通一个 Tiny LM 的训练与生成流程。"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body class="page-root">
+    <header>
+      <div class="container nav">
+        <div class="nav-left">
+          <div class="nav-logo"></div>
+          <div class="nav-title">
+            <span class="nav-title-main">LLM 实战教程</span>
+            <span class="nav-title-sub">2. Tiny LM 训练与生成</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="../index.html" class="nav-link">返回首页</a>
+          <a href="chapter-1-transformer-basics.html" class="nav-link">
+            ← 上一章 · Transformer 基础
+          </a>
+          <a href="chapter-3-instruction-finetune-lora.html" class="nav-link">
+            下一章 · 指令微调与 LoRA →
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="chapter-layout">
+          <aside class="chapter-sidebar">
+            <div class="chapter-sidebar-title">教程导航</div>
+            <ul class="chapter-sidebar-list">
+              <li>
+                <a href="chapter-0-intro.html">
+                  <span></span>
+                  0. 引言
+                </a>
+              </li>
+              <li>
+                <a href="chapter-1-transformer-basics.html">
+                  <span></span>
+                  1. Transformer 与语言模型基础
+                </a>
+              </li>
+              <li>
+                <a href="chapter-2-tiny-lm-training.html">
+                  <span></span>
+                  2. Tiny LM 训练与生成（当前）
+                </a>
+              </li>
+              <li>
+                <a href="chapter-3-instruction-finetune-lora.html">
+                  <span></span>
+                  3. 指令微调与 LoRA
+                </a>
+              </li>
+              <li>
+                <a href="chapter-4-rag-system.html">
+                  <span></span>
+                  4. RAG（检索增强生成）
+                </a>
+              </li>
+              <li>
+                <a href="chapter-5-agents-and-tools.html">
+                  <span></span>
+                  5. Agent 与工具调用
+                </a>
+              </li>
+            </ul>
+          </aside>
+
+          <article class="chapter-content">
+            <div class="chapter-meta-row">
+              <div class="chapter-breadcrumb">
+                <a href="../index.html">LLM 实战教程</a>
+                <span> / </span>
+                <a href="chapter-0-intro.html">0. 引言</a>
+                <span> / </span>
+                <a href="chapter-1-transformer-basics.html">1. Transformer 基础</a>
+                <span> / </span>
+                <span>2. Tiny LM 训练与生成</span>
+              </div>
+              <span class="status-pill">
+                <span class="status-dot"></span>
+                建议配合 <code>scripts/run_tiny_lm.sh</code> 实际运行
+              </span>
+            </div>
+
+            <h1 class="chapter-title">2. Tiny LM 训练与生成</h1>
+            <p class="chapter-subtitle">
+              本页内容由 <code>docs/02_tiny_lm_training.md</code>
+              动态加载，带你从工程角度看一次完整的训练与生成流程。
+            </p>
+
+            <div id="chapter-md" class="chapter-md loading">
+              正在载入文档内容，请稍候……
+            </div>
+
+            <div class="chapter-nav-bottom">
+              <a href="chapter-1-transformer-basics.html">
+                ← 上一章：1. Transformer 与语言模型基础
+              </a>
+              <a href="chapter-3-instruction-finetune-lora.html">
+                下一章：3. 指令微调与 LoRA →
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container footer-row">
+        <div>
+          <div>LLM 实战教程 · Chapter 2</div>
+          <div>跑通第一个 Tiny LM，是后续所有模块的基础。</div>
+        </div>
+        <div class="footer-right">
+          <span class="badge">
+            <span class="badge-dot"></span>
+            <span>配套训练脚本与生成代码</span>
+          </span>
+          <a
+            class="nav-link"
+            href="https://github.com/youlixiya/llm-learning/blob/main/docs/02_tiny_lm_training.md"
+            target="_blank"
+            rel="noreferrer"
+          >
+            在 GitHub 上查看 Markdown →
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const target = document.getElementById("chapter-md");
+        const mdPath = "../../docs/02_tiny_lm_training.md";
+
+        function renderMarkdown(text) {
+          try {
+            const html = marked.parse(text);
+            target.classList.remove("loading");
+            target.innerHTML = html;
+          } catch (e) {
+            console.error(e);
+            target.classList.remove("loading");
+            target.classList.add("error");
+            target.textContent = "渲染 Markdown 时出错，请稍后刷新重试。";
+          }
+        }
+
+        fetch(mdPath)
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("HTTP " + res.status);
+            }
+            return res.text();
+          })
+          .then(renderMarkdown)
+          .catch((err) => {
+            console.error(err);
+            target.classList.remove("loading");
+            target.classList.add("error");
+            target.textContent =
+              "无法加载 docs/02_tiny_lm_training.md，请确认该文件已经随页面一同部署。";
+          });
+      })();
+    </script>
+  </body>
+</html>
+

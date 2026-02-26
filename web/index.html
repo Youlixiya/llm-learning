@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>LLM 实战教程 · Python + PyTorch</title>
+    <meta
+      name="description"
+      content="从 Tiny Transformer 到指令微调、RAG、Agent 与部署的一整套 LLM 实战教程。"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-root">
+    <header>
+      <div class="container nav">
+        <div class="nav-left">
+          <div class="nav-logo"></div>
+          <div class="nav-title">
+            <span class="nav-title-main">LLM 实战教程</span>
+            <span class="nav-title-sub">Python · PyTorch · 从零到生产级</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#modules" class="nav-link">学习路线</a>
+          <a href="#workflow" class="nav-link">工程视角</a>
+          <a href="#chapters" class="nav-link">章节总览</a>
+          <a
+            href="https://github.com/youlixiya/llm-learning"
+            class="nav-link nav-link-primary"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub 仓库
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <div class="hero-text-eyebrow">
+              <span class="badge-dot"></span>
+              <span>面向工程实践的中文 LLM 教程</span>
+            </div>
+            <h1 id="hero-title" class="hero-title">
+              从 <span class="hero-title-gradient">会调 API</span>，
+              到能落地完整的
+              <span class="hero-title-gradient">LLM 应用</span>
+            </h1>
+            <p class="hero-subtitle">
+              一套围绕实战设计的 LLM 学习路线：从 Tiny Transformer 玩具模型，到指令微调
+             （LoRA）、RAG 知识库、Agent 与工具调用，再到评测与部署，全部以可运行代码为核心。
+            </p>
+
+            <div class="hero-actions">
+              <a href="chapters/chapter-0-intro.html" class="btn btn-primary">
+                从 0. 引言 开始学习
+                <span>→</span>
+              </a>
+              <a href="#modules" class="btn btn-outline">
+                先看看完整学习路径
+              </a>
+            </div>
+
+            <div class="hero-meta">
+              <div class="hero-kpis">
+                <div class="hero-kpi">
+                  <span class="hero-kpi-value">6</span>
+                  <span>主题模块</span>
+                </div>
+                <div class="hero-kpi">
+                  <span class="hero-kpi-value">工程导向</span>
+                  <span>每章配套脚本与代码</span>
+                </div>
+              </div>
+              <span class="chip-soft">
+                <span class="chip-soft-dot"></span>
+                适合已有编程基础的开发者
+              </span>
+            </div>
+          </div>
+
+          <aside class="hero-panel" aria-hidden="true">
+            <div class="hero-panel-glow"></div>
+            <div class="hero-panel-inner">
+              <div class="hero-panel-header">
+                <div class="hero-panel-title">本仓库结构一览</div>
+                <span class="hero-panel-chip">工程就绪</span>
+              </div>
+              <div class="hero-panel-body">
+                <div class="hero-panel-code mono">
+                  <pre><code>llm-learning/
+├─ docs/          # 教程文档（中文）
+├─ src/
+│  ├─ tiny_lm/    # Tiny Transformer 语言模型
+│  ├─ finetune/   # 指令微调 &amp; LoRA
+│  ├─ rag/        # 检索增强生成（RAG）
+│  ├─ agents/     # Agent 与工具调用
+│  └─ evals/      # 评测脚本
+├─ data/          # 示例数据
+└─ scripts/       # 一键运行脚本</code></pre>
+                </div>
+                <div>
+                  <div class="hero-tag">
+                    <span>🛠️ 最小可运行示例优先</span>
+                  </div>
+                  <div class="hero-panel-list">
+                    <div>
+                      <strong>从跑通开始：</strong> 每个模块都提供脚本或
+                      Notebook，先跑起来再看原理。
+                    </div>
+                    <div>
+                      <strong>可复用代码：</strong> `src/` 下的模块可以直接在你的真实项目中引用和改造。
+                    </div>
+                    <div>
+                      <strong>中文讲解：</strong> 重点解释工程里的坑与经验，而不是推公式。
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="modules" class="section" aria-labelledby="modules-title">
+          <div class="section-header">
+            <div>
+              <h2 id="modules-title" class="section-title">推荐学习路线</h2>
+              <p class="section-subtitle">
+                从 Tiny LM 入门，到 LoRA 微调、RAG、Agent 和部署，循序渐进搭建自己的 LLM
+                技术栈。
+              </p>
+            </div>
+            <div class="pill-row">
+              <span class="pill">Python 3.10+</span>
+              <span class="pill">PyTorch</span>
+              <span class="pill">Transformers · PEFT</span>
+              <span class="pill">RAG · Agent · Evals</span>
+            </div>
+          </div>
+
+          <div class="grid-modules" id="chapters">
+            <a href="chapters/chapter-0-intro.html" class="module-card">
+              <div class="module-tag">Chapter 0</div>
+              <div class="module-badge">
+                为什么还要系统学 LLM？
+              </div>
+              <h3 class="module-title">引言与整体规划</h3>
+              <p class="module-desc">
+                了解教程面向的人群、整体结构与使用方式，从工程视角重新审视“用好 LLM”这件事。
+              </p>
+              <div class="module-meta">
+                <span class="module-link">
+                  阅读引言
+                  <span>→</span>
+                </span>
+                <div class="module-meta-right">
+                  <span class="tag-chip">学习路线</span>
+                  <span class="tag-chip">工程观</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="chapters/chapter-1-transformer-basics.html" class="module-card">
+              <div class="module-tag">Chapter 1</div>
+              <div class="module-badge">
+                从零实现 Tiny Transformer
+              </div>
+              <h3 class="module-title">语言模型与 Transformer 基础</h3>
+              <p class="module-desc">
+                从“预测下一个 token”的视角理解语言模型，配套 Tiny Transformer
+                示例代码，帮你真正弄懂模型在做什么。
+              </p>
+              <div class="module-meta">
+                <span class="module-link">
+                  打开基础篇
+                  <span>→</span>
+                </span>
+                <div class="module-meta-right">
+                  <span class="tag-chip">Transformer</span>
+                  <span class="tag-chip">Tiny LM</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="chapters/chapter-2-tiny-lm-training.html" class="module-card">
+              <div class="module-tag">Chapter 2</div>
+              <div class="module-badge">
+                跑通第一个 Tiny LM
+              </div>
+              <h3 class="module-title">Tiny LM 训练与生成</h3>
+              <p class="module-desc">
+                使用项目中的训练脚本，从数据准备到训练与生成，完整跑通一套最小可行的
+                LM 实验。
+              </p>
+              <div class="module-meta">
+                <span class="module-link">
+                  开始训练 Tiny LM
+                  <span>→</span>
+                </span>
+                <div class="module-meta-right">
+                  <span class="tag-chip">训练脚本</span>
+                  <span class="tag-chip">实验实践</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="chapters/chapter-3-instruction-finetune-lora.html" class="module-card">
+              <div class="module-tag">Chapter 3</div>
+              <div class="module-badge">
+                参数高效微调（PEFT）
+              </div>
+              <h3 class="module-title">指令微调与 LoRA</h3>
+              <p class="module-desc">
+                在开源模型上做指令微调，认识 LoRA / QLoRA 等参数高效微调方法，把通用
+                LLM 变成你的专用助手。
+              </p>
+              <div class="module-meta">
+                <span class="module-link">
+                  进入微调篇
+                  <span>→</span>
+                </span>
+                <div class="module-meta-right">
+                  <span class="tag-chip">LoRA</span>
+                  <span class="tag-chip">SFT</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="chapters/chapter-4-rag-system.html" class="module-card">
+              <div class="module-tag">Chapter 4</div>
+              <div class="module-badge">
+                知识库问答系统
+              </div>
+              <h3 class="module-title">RAG（检索增强生成）</h3>
+              <p class="module-desc">
+                从数据预处理、索引构建到在线检索与回答，搭建自己的 RAG 流程，让模型先“查资料”再回答。
+              </p>
+              <div class="module-meta">
+                <span class="module-link">
+                  学习 RAG
+                  <span>→</span>
+                </span>
+                <div class="module-meta-right">
+                  <span class="tag-chip">Embedding</span>
+                  <span class="tag-chip">检索</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="chapters/chapter-5-agents-and-tools.html" class="module-card">
+              <div class="module-tag">Chapter 5</div>
+              <div class="module-badge">
+                超越“单轮问答”
+              </div>
+              <h3 class="module-title">Agent 与工具调用</h3>
+              <p class="module-desc">
+                让模型学会调用工具（搜索、数据库、计算等），串联多步推理流程，构建更复杂的
+                LLM Agent 系统。
+              </p>
+              <div class="module-meta">
+                <span class="module-link">
+                  进入 Agent 篇
+                  <span>→</span>
+                </span>
+                <div class="module-meta-right">
+                  <span class="tag-chip">Tool Use</span>
+                  <span class="tag-chip">多轮决策</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section id="workflow" class="section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">从工程视角看 LLM 项目全流程</h2>
+              <p class="section-subtitle">
+                不只是“模型训练”和“Prompt 设计”，而是一条贯穿数据、模型、系统和评测的完整链路。
+              </p>
+            </div>
+          </div>
+
+          <div class="section-columns">
+            <div class="card">
+              <div class="card-title">你可以这样使用本教程</div>
+              <div class="card-body">
+                <ul class="card-list">
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>Step 1 · 环境 + Tiny LM：</strong>
+                      按 `README.md` 完成环境准备，运行
+                      <span class="mono">scripts/run_tiny_lm.sh</span>
+                      跑通第一个模型。
+                    </div>
+                  </li>
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>Step 2 · 理解与改造：</strong>
+                      结合
+                      <span class="mono">docs/01_*.md</span>
+                      与
+                      <span class="mono">docs/02_*.md</span>
+                      ，尝试改模型尺寸、数据和训练参数。
+                    </div>
+                  </li>
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>Step 3 · 上大模型 + LoRA：</strong>
+                      参考 LoRA 章节与
+                      <span class="mono">src/finetune</span>
+                      代码，对开源模型做指令微调。
+                    </div>
+                  </li>
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>Step 4 · 接入你的业务：</strong>
+                      利用 RAG、Agent 和 API 部署章节，把教程代码改造成与你领域相关的应用。
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">本教程特别强调的三件事</div>
+              <div class="card-body">
+                <ul class="card-list">
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>工程导向：</strong>
+                      更多讲“如何在有限算力下做事”“如何控制成本和风险”，少讲抽象理论。
+                    </div>
+                  </li>
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>可复用性：</strong>
+                      `src/` 中的代码按模块组织，方便你拆出来用在自己的服务中。
+                    </div>
+                  </li>
+                  <li>
+                    <span class="card-list-bullet"></span>
+                    <div>
+                      <strong>记录与迭代：</strong>
+                      鼓励你在学习过程中记录实验、踩坑和配置，形成自己的 LLM 运维手册。
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container footer-row">
+        <div>
+          <div>LLM 实战教程 · 由 youlixiya 维护</div>
+          <div>从学习到落地，欢迎基于本仓库搭建你自己的 LLM 应用。</div>
+        </div>
+        <div class="footer-right">
+          <span class="badge">
+            <span class="badge-dot"></span>
+            <span>持续更新中</span>
+          </span>
+          <a
+            class="nav-link"
+            href="https://github.com/youlixiya/llm-learning"
+            target="_blank"
+            rel="noreferrer"
+          >
+            在 GitHub 上查看 →
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
