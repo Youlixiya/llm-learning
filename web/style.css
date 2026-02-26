@@ -664,7 +664,7 @@ footer {
 /* Chapter Layout - Increased content area */
 .chapter-layout {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(200px, 1fr);
+  grid-template-columns: minmax(0, 8fr) minmax(180px, 1fr);
   gap: 2.5rem;
 }
 
@@ -674,8 +674,8 @@ footer {
   align-self: flex-start;
   max-height: calc(100vh - 5rem);
   overflow-y: auto;
-  min-width: 200px;
-  max-width: 250px;
+  min-width: 180px;
+  max-width: 220px;
 }
 
 .chapter-sidebar-title {
@@ -929,7 +929,7 @@ footer {
 
 @media (max-width: 1200px) {
   .chapter-layout {
-    grid-template-columns: minmax(0, 4fr) minmax(180px, 1fr);
+    grid-template-columns: minmax(0, 6fr) minmax(160px, 1fr);
     gap: 2rem;
   }
   
