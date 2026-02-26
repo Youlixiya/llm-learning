@@ -12,6 +12,7 @@
       content="让模型学会调用外部工具与 API，构建多轮决策与复杂任务编排的 LLM Agent。"
     />
     <link rel="stylesheet" href="../style.css" />
+    <script src="../theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body class="page-root">
@@ -26,6 +27,7 @@
         </div>
         <nav class="nav-links">
           <a href="../index.html" class="nav-link">返回首页</a>
+          <button class="theme-toggle nav-link" onclick="toggleTheme()" aria-label="切换主题">☀️</button>
           <a href="chapter-4-rag-system.html" class="nav-link">
             ← 上一章 · RAG 系统
           </a>
@@ -144,36 +146,60 @@
     <script>
       (function () {
         const target = document.getElementById("chapter-md");
-        const mdPath = "../docs/05_agents_and_tools.md";
+        if (!target) return;
+
+        const basePath = window.location.pathname.match(/^(\/[^\/]+\/)/)?.[1] || '';
+        const paths = [
+          "../docs/05_agents_and_tools.md",
+          basePath + "docs/05_agents_and_tools.md",
+          "docs/05_agents_and_tools.md",
+          "../web/docs/05_agents_and_tools.md"
+        ];
 
         function renderMarkdown(text) {
           try {
+            if (typeof marked === 'undefined') {
+              throw new Error('Marked.js library not loaded');
+            }
             const html = marked.parse(text);
             target.classList.remove("loading");
+            target.classList.remove("error");
             target.innerHTML = html;
           } catch (e) {
-            console.error(e);
+            console.error('Error parsing markdown:', e);
             target.classList.remove("loading");
             target.classList.add("error");
-            target.textContent = "渲染 Markdown 时出错，请稍后刷新重试。";
+            target.innerHTML = '<p>渲染 Markdown 时出错：' + e.message + '</p>';
           }
         }
 
-        fetch(mdPath)
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error("HTTP " + res.status);
-            }
-            return res.text();
-          })
-          .then(renderMarkdown)
-          .catch((err) => {
-            console.error(err);
+        function tryLoad(index) {
+          if (index >= paths.length) {
             target.classList.remove("loading");
             target.classList.add("error");
-            target.textContent =
-              "无法加载 docs/05_agents_and_tools.md，请确认该文件已经随页面一同部署。";
-          });
+            target.innerHTML = '<p>无法加载 docs/05_agents_and_tools.md</p><p>已尝试的路径：</p><ul>' + 
+              paths.map(p => '<li><code>' + p + '</code></li>').join('') + '</ul>';
+            return;
+          }
+
+          const path = paths[index];
+          console.log('Trying to load:', path);
+
+          fetch(path)
+            .then((res) => {
+              if (!res.ok) {
+                throw new Error("HTTP " + res.status);
+              }
+              return res.text();
+            })
+            .then(renderMarkdown)
+            .catch((err) => {
+              console.warn('Failed to load:', path, err);
+              tryLoad(index + 1);
+            });
+        }
+
+        tryLoad(0);
       })();
     </script>
   </body>
